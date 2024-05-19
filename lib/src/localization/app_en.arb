@@ -1,0 +1,15 @@
+{
+  "appTitle": "Wordle Solver",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "hardMode": "Hard mode",
+  "confirm": "Confirm",
+  "areYouSureClear": "Are you sure you want to clear your progress?",
+  "cancel": "Cancel",
+  "accept": "Accept",
+  "progressCleared": "Progress cleared",
+  "notAWord": "{word} is not a valid word",
+  "cannotLaunchUrl": "Could not launch {url}",
+  "noWordsLeft": "No words left to check"
+}
