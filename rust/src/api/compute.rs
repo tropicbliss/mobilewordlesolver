@@ -4,7 +4,7 @@ use crate::{
 };
 
 pub struct RustLetterBox {
-    pub char: String,
+    pub char: char,
     pub state: Correctness,
 }
 
@@ -13,7 +13,7 @@ fn process_outer(state: Vec<[RustLetterBox; 5]>) -> Vec<Guess> {
         .into_iter()
         .map(|word| Guess {
             inner: word.map(|lb| LetterBox {
-                char: lb.char.to_ascii_lowercase().bytes().nth(0).unwrap(),
+                char: lb.char.to_ascii_lowercase() as u8,
                 state: lb.state,
             }),
         })

@@ -9,8 +9,13 @@ const double keyboardHeight = 150;
 class Keyboard extends StatelessWidget {
   final bool visible;
   final void Function(dynamic) onKeyPress;
+  final String text;
 
-  const Keyboard({super.key, required this.visible, required this.onKeyPress});
+  const Keyboard(
+      {super.key,
+      required this.visible,
+      required this.onKeyPress,
+      required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +29,7 @@ class Keyboard extends StatelessWidget {
                 top: Radius.circular(AppDimensions.commonMedium)),
             color: Colors.deepPurple),
         child: VirtualKeyboard(
+          textController: TextEditingController(text: text),
           height: keyboardHeight,
           type: VirtualKeyboardType.Alphanumeric,
           alwaysCaps: true,

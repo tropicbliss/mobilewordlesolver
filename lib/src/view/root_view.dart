@@ -357,6 +357,10 @@ class _RootViewState extends State<RootView> {
                       )),
               ),
               bottomNavigationBar: Keyboard(
+                text: currentWord
+                    .takeWhile((letterbox) => letterbox.char != null)
+                    .map((letterbox) => letterbox.char)
+                    .join(),
                 visible: !(immutableWords.isNotEmpty || isSolved),
                 onKeyPress: (key) {
                   setState(() {
