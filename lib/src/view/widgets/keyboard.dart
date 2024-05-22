@@ -77,7 +77,6 @@ const List<List> _defaultEnglishLayout = [
     'l',
   ],
   [
-    VirtualKeyboardKeyAction.Backspace,
     'z',
     'x',
     'c',
@@ -85,5 +84,6 @@ const List<List> _defaultEnglishLayout = [
     'b',
     'n',
     'm',
+    VirtualKeyboardKeyAction.Backspace,
   ]
 ];
