@@ -122,274 +122,271 @@ class _RootViewState extends State<RootView> {
     bool isHardMode = widget.settingsController.hardMode;
     bool showBackButton = immutableWords.isNotEmpty && !isSolved;
 
-    return Builder(builder: (context) {
-      return Stack(
-        children: [
-          Scaffold(
-              appBar: AppBar(
-                title: Text(AppLocalizations.of(context)!.appTitle),
-                actions: [
-                  AppBarAction(
-                      visible: immutableWords.isNotEmpty || isSolved,
-                      icon: Icons.delete,
-                      onPressed: () {
-                        void clear() {
-                          setState(() {
-                            immutableWords.clear();
-                            currentWord = generateEmptyLetterBoxes();
-                            isSolved = false;
-                            selectedIdx = 0;
-                          });
-                        }
-
-                        if (isSolved) {
-                          clear();
-                          return;
-                        }
-                        showConfirmationDialog(context, () {
-                          clear();
+    return Stack(
+      children: [
+        Scaffold(
+            appBar: AppBar(
+              title: Text(AppLocalizations.of(context)!.appTitle),
+              actions: [
+                AppBarAction(
+                    visible: immutableWords.isNotEmpty || isSolved,
+                    icon: Icons.delete,
+                    onPressed: () {
+                      void clear() {
+                        setState(() {
+                          immutableWords.clear();
+                          currentWord = generateEmptyLetterBoxes();
+                          isSolved = false;
+                          selectedIdx = 0;
                         });
-                      },
-                      disable: disableAllInputs),
-                  AppBarAction(
-                    icon: Icons.info,
-                    onPressed: () {
-                      launchInWebView(
-                          "https://github.com/tropicbliss/mobilewordlesolver");
-                    },
-                  ),
-                  AppBarAction(
-                    icon: currentTheme.getThemeIcon(),
-                    onPressed: () {
-                      switch (currentTheme) {
-                        case AppTheme.light:
-                          widget.settingsController
-                              .updateThemeMode(ThemeMode.dark);
-                          break;
-                        case AppTheme.dark:
-                          widget.settingsController
-                              .updateThemeMode(ThemeMode.light);
                       }
+
+                      if (isSolved) {
+                        clear();
+                        return;
+                      }
+                      showConfirmationDialog(context, () {
+                        clear();
+                      });
                     },
-                  ),
-                ],
-              ),
-              body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: isSolved
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: currentWord.map((letterBox) {
-                          return LetterBox(
-                              params: LetterBoxParams(
-                                  state: BoxStatus.correct,
-                                  char: letterBox.char!));
-                        }).toList(),
-                      )
-                    : SingleChildScrollView(
-                        child: Column(
-                        children: [
-                          HardModeSlider(
-                              isHardMode: isHardMode,
-                              onChanged: (newValue) {
-                                widget.settingsController
-                                    .updateHardMode(newValue);
-                              }),
-                          const SizedBox(
-                            height: AppDimensions.commonBig,
-                          ),
-                          Column(
-                            children: immutableWords.map((word) {
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List<int>.generate(5, (idx) => idx)
-                                    .map((idx) {
-                                  CompletedLetterBoxState letterBox = word[idx];
-                                  return LetterBox(
-                                      params: LetterBoxParams(
-                                          state: letterBox.state,
-                                          char: letterBox.char));
-                                }).toList(),
-                              );
-                            }).toList(),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children:
-                                List<int>.generate(5, (idx) => idx).map((idx) {
-                              InitialLetterBoxState letterBox =
-                                  currentWord[idx];
-                              return AnimatedLetterBox(
-                                params: letterBox,
-                                borderColour: selectedIdx == idx
-                                    ? Colors.deepPurple
-                                    : Colors.grey,
+                    disable: disableAllInputs),
+                AppBarAction(
+                  icon: Icons.info,
+                  onPressed: () {
+                    launchInWebView(
+                        "https://github.com/tropicbliss/mobilewordlesolver");
+                  },
+                ),
+                AppBarAction(
+                  icon: currentTheme.getThemeIcon(),
+                  onPressed: () {
+                    switch (currentTheme) {
+                      case AppTheme.light:
+                        widget.settingsController
+                            .updateThemeMode(ThemeMode.dark);
+                        break;
+                      case AppTheme.dark:
+                        widget.settingsController
+                            .updateThemeMode(ThemeMode.light);
+                    }
+                  },
+                ),
+              ],
+            ),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: isSolved
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: currentWord.map((letterBox) {
+                        return LetterBox(
+                            params: LetterBoxParams(
+                                state: BoxStatus.correct,
+                                char: letterBox.char!));
+                      }).toList(),
+                    )
+                  : SingleChildScrollView(
+                      child: Column(
+                      children: [
+                        HardModeSlider(
+                            isHardMode: isHardMode,
+                            onChanged: (newValue) {
+                              widget.settingsController
+                                  .updateHardMode(newValue);
+                            }),
+                        const SizedBox(
+                          height: AppDimensions.commonBig,
+                        ),
+                        Column(
+                          children: immutableWords.map((word) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List<int>.generate(5, (idx) => idx)
+                                  .map((idx) {
+                                CompletedLetterBoxState letterBox = word[idx];
+                                return LetterBox(
+                                    params: LetterBoxParams(
+                                        state: letterBox.state,
+                                        char: letterBox.char));
+                              }).toList(),
+                            );
+                          }).toList(),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children:
+                              List<int>.generate(5, (idx) => idx).map((idx) {
+                            InitialLetterBoxState letterBox = currentWord[idx];
+                            return AnimatedLetterBox(
+                              params: letterBox,
+                              borderColour: selectedIdx == idx
+                                  ? Colors.deepPurple
+                                  : Colors.grey,
+                              onTap: () {
+                                setState(() {
+                                  selectedIdx = idx;
+                                });
+                              },
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(
+                          height: AppDimensions.commonMedium,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            BoxStatus.notInWord,
+                            BoxStatus.wrongSpot,
+                            BoxStatus.correct
+                          ].map((boxState) {
+                            return LetterBox(
+                                params: LetterBoxParams(state: boxState),
                                 onTap: () {
                                   setState(() {
-                                    selectedIdx = idx;
+                                    currentWord[selectedIdx].state = boxState;
+                                    if (selectedIdx != 4) {
+                                      selectedIdx++;
+                                    }
                                   });
-                                },
-                              );
-                            }).toList(),
-                          ),
-                          const SizedBox(
-                            height: AppDimensions.commonMedium,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              BoxStatus.notInWord,
-                              BoxStatus.wrongSpot,
-                              BoxStatus.correct
-                            ].map((boxState) {
-                              return LetterBox(
-                                  params: LetterBoxParams(state: boxState),
-                                  onTap: () {
-                                    setState(() {
-                                      currentWord[selectedIdx].state = boxState;
-                                      if (selectedIdx != 4) {
-                                        selectedIdx++;
-                                      }
-                                    });
-                                  });
-                            }).toList(),
-                          ),
-                          const SizedBox(
-                            height: AppDimensions.commonBig,
-                          ),
-                          Row(
-                            mainAxisAlignment: showBackButton
-                                ? MainAxisAlignment.spaceBetween
-                                : MainAxisAlignment.end,
-                            children: [
-                              SquareButton(
-                                disableAllInputs: disableAllInputs,
-                                visible: showBackButton,
-                                icon: IconButton(
-                                  icon: const Icon(
-                                    Icons.arrow_back,
-                                  ),
-                                  color: Colors.white,
-                                  onPressed: disableAllInputs
-                                      ? null
-                                      : () {
-                                          setState(() {
-                                            List<CompletedLetterBoxState>
-                                                lastWord =
-                                                immutableWords.removeLast();
-                                            currentWord =
-                                                lastWord.map((letterBox) {
-                                              InitialLetterBoxState result =
-                                                  InitialLetterBoxState();
-                                              result.char = letterBox.char;
-                                              result.state = letterBox.state;
-                                              return result;
-                                            }).toList();
-                                            selectedIdx = 0;
-                                          });
-                                        },
+                                });
+                          }).toList(),
+                        ),
+                        const SizedBox(
+                          height: AppDimensions.commonBig,
+                        ),
+                        Row(
+                          mainAxisAlignment: showBackButton
+                              ? MainAxisAlignment.spaceBetween
+                              : MainAxisAlignment.end,
+                          children: [
+                            SquareButton(
+                              disableAllInputs: disableAllInputs,
+                              visible: showBackButton,
+                              icon: IconButton(
+                                icon: const Icon(
+                                  Icons.arrow_back,
                                 ),
+                                color: Colors.white,
+                                onPressed: disableAllInputs
+                                    ? null
+                                    : () {
+                                        setState(() {
+                                          List<CompletedLetterBoxState>
+                                              lastWord =
+                                              immutableWords.removeLast();
+                                          currentWord =
+                                              lastWord.map((letterBox) {
+                                            InitialLetterBoxState result =
+                                                InitialLetterBoxState();
+                                            result.char = letterBox.char;
+                                            result.state = letterBox.state;
+                                            return result;
+                                          }).toList();
+                                          selectedIdx = 0;
+                                        });
+                                      },
                               ),
-                              Row(
-                                children: [
-                                  SquareButton(
-                                    disableAllInputs: disableAllInputs,
-                                    icon: IconButton(
-                                      icon: const Icon(Icons.check),
-                                      color: Colors.white,
-                                      onPressed: disableAllInputs
-                                          ? null
-                                          : () {
-                                              setState(() {
-                                                for (InitialLetterBoxState letterBox
-                                                    in currentWord) {
-                                                  letterBox.state =
-                                                      BoxStatus.correct;
-                                                }
-                                                selectedIdx = 4;
-                                              });
-                                            },
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: AppDimensions.commonMedium,
-                                  ),
-                                  ShakeMe(
-                                    key: shakeKey,
-                                    shakeOffset: AppDimensions.commonSmall,
-                                    shakeDuration:
-                                        const Duration(milliseconds: 500),
-                                    child: SquareButton(
-                                      disableAllInputs: disableAllInputs,
-                                      icon: AnimatedSwitcher(
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          transitionBuilder: (Widget child,
-                                              Animation<double> animation) {
-                                            return RotationTransition(
-                                                turns: animation, child: child);
+                            ),
+                            Row(
+                              children: [
+                                SquareButton(
+                                  disableAllInputs: disableAllInputs,
+                                  icon: IconButton(
+                                    icon: const Icon(Icons.check),
+                                    color: Colors.white,
+                                    onPressed: disableAllInputs
+                                        ? null
+                                        : () {
+                                            setState(() {
+                                              for (InitialLetterBoxState letterBox
+                                                  in currentWord) {
+                                                letterBox.state =
+                                                    BoxStatus.correct;
+                                              }
+                                              selectedIdx = 4;
+                                            });
                                           },
-                                          child: disableAllInputs
-                                              ? const CircularProgressIndicator(
-                                                  strokeWidth:
-                                                      AppDimensions.commonSmall,
-                                                  key: ValueKey("loading"),
-                                                  color: Colors.white,
-                                                )
-                                              : IconButton(
-                                                  icon: const Icon(
-                                                      Icons.arrow_forward),
-                                                  color: Colors.white,
-                                                  key: const ValueKey("next"),
-                                                  onPressed: () {
-                                                    onSubmit(isHardMode);
-                                                  })),
-                                    ),
                                   ),
-                                ],
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: AppDimensions.commonBig,
-                          ),
-                        ],
-                      )),
-              ),
-              bottomNavigationBar: Keyboard(
-                text: currentWord
-                    .takeWhile((letterbox) => letterbox.char != null)
-                    .map((letterbox) => letterbox.char!)
-                    .join(),
-                visible: !(immutableWords.isNotEmpty || isSolved),
-                onKeyPress: (key) {
-                  setState(() {
-                    switch (key.keyType) {
-                      case VirtualKeyboardKeyType.String:
-                        var itemMap = currentWord.asMap();
-                        for (var entry in itemMap.entries) {
-                          if (entry.value.char == null ||
-                              entry.key == currentWord.length - 1) {
-                            entry.value.char = key.capsText;
-                            break;
-                          }
+                                ),
+                                const SizedBox(
+                                  width: AppDimensions.commonMedium,
+                                ),
+                                ShakeMe(
+                                  key: shakeKey,
+                                  shakeOffset: AppDimensions.commonSmall,
+                                  shakeDuration:
+                                      const Duration(milliseconds: 500),
+                                  child: SquareButton(
+                                    disableAllInputs: disableAllInputs,
+                                    icon: AnimatedSwitcher(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        transitionBuilder: (Widget child,
+                                            Animation<double> animation) {
+                                          return RotationTransition(
+                                              turns: animation, child: child);
+                                        },
+                                        child: disableAllInputs
+                                            ? const CircularProgressIndicator(
+                                                strokeWidth:
+                                                    AppDimensions.commonSmall,
+                                                key: ValueKey("loading"),
+                                                color: Colors.white,
+                                              )
+                                            : IconButton(
+                                                icon: const Icon(
+                                                    Icons.arrow_forward),
+                                                color: Colors.white,
+                                                key: const ValueKey("next"),
+                                                onPressed: () {
+                                                  onSubmit(isHardMode);
+                                                })),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: AppDimensions.commonBig,
+                        ),
+                      ],
+                    )),
+            ),
+            bottomNavigationBar: Keyboard(
+              text: currentWord
+                  .takeWhile((letterbox) => letterbox.char != null)
+                  .map((letterbox) => letterbox.char!)
+                  .join(),
+              visible: !(immutableWords.isNotEmpty || isSolved),
+              onKeyPress: (key) {
+                setState(() {
+                  switch (key.keyType) {
+                    case VirtualKeyboardKeyType.String:
+                      var itemMap = currentWord.asMap();
+                      for (var entry in itemMap.entries) {
+                        if (entry.value.char == null ||
+                            entry.key == currentWord.length - 1) {
+                          entry.value.char = key.capsText;
+                          break;
                         }
-                        break;
-                      case VirtualKeyboardKeyType.Action:
-                        if (key.action == VirtualKeyboardKeyAction.Backspace) {
-                          int idx = currentWord.lastIndexWhere(
-                              (letterBox) => letterBox.char != null);
-                          if (idx != -1) {
-                            currentWord[idx].char = null;
-                          }
+                      }
+                      break;
+                    case VirtualKeyboardKeyType.Action:
+                      if (key.action == VirtualKeyboardKeyAction.Backspace) {
+                        int idx = currentWord.lastIndexWhere(
+                            (letterBox) => letterBox.char != null);
+                        if (idx != -1) {
+                          currentWord[idx].char = null;
                         }
-                    }
-                  });
-                },
-              )),
-          Confetti(confettiController: confettiController)
-        ],
-      );
-    });
+                      }
+                  }
+                });
+              },
+            )),
+        Confetti(confettiController: confettiController)
+      ],
+    );
   }
 }
