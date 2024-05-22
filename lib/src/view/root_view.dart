@@ -99,16 +99,16 @@ class _RootViewState extends State<RootView> {
         completedCurrentWord
       ];
       SolverResult result = await SolverService.solve(history, hardMode);
-      if (result is NotAWord) {
-        checkWordError(result);
-      } else if (result is NoWordsLeft) {
-        checkWordError(result);
-      } else if (result is FoundWord) {
-        setState(() {
-          immutableWords.add(completedCurrentWord);
-          selectedIdx = 0;
-          currentWord = generateEmptyLetterBoxes(result.newWord);
-        });
+      switch (result) {
+        case SolverError():
+          checkWordError(result);
+          break;
+        case FoundWord(newWord: String newWord):
+          setState(() {
+            immutableWords.add(completedCurrentWord);
+            selectedIdx = 0;
+            currentWord = generateEmptyLetterBoxes(newWord);
+          });
       }
     }
     setState(() {

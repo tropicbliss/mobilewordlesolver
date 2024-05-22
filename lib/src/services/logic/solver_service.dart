@@ -31,10 +31,12 @@ class SolverService {
   }
 
   static String getWordErrorReason(BuildContext context, SolverError error) {
-    String message = error is NotAWord
-        ? AppLocalizations.of(context)!.notAWord(capitaliseFirst(error.word))
-        : AppLocalizations.of(context)!.noWordsLeft;
-    return message;
+    switch (error) {
+      case NotAWord(word: String word):
+        return AppLocalizations.of(context)!.notAWord(capitaliseFirst(word));
+      case NoWordsLeft():
+        return AppLocalizations.of(context)!.noWordsLeft;
+    }
   }
 }
 
