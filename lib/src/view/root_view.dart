@@ -11,7 +11,7 @@ import 'package:wordle_solver/src/services/webview/url_launcher_service.dart';
 import 'package:wordle_solver/src/view/theme_mode_helper.dart';
 import 'package:wordle_solver/src/view/widgets/letter_box.dart';
 import 'package:wordle_solver/src/view/widgets/square_button.dart';
-import 'package:wordle_solver/src/view/widgets/action.dart';
+import 'package:wordle_solver/src/view/widgets/app_bar_action.dart';
 import 'package:wordle_solver/src/view/widgets/confetti.dart';
 import 'package:wordle_solver/src/view/widgets/confirmation_dialog.dart';
 import 'package:wordle_solver/src/view/widgets/hard_mode_slider.dart';
