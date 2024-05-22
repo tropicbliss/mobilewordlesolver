@@ -1,5 +1,5 @@
 default:
-	flutter build apk --release
+	flutter build apk --obfuscate --split-debug-info --release
 icons:
 	flutter pub run flutter_launcher_icons
 clean:
