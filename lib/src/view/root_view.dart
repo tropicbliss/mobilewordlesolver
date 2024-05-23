@@ -327,6 +327,8 @@ class _RootViewState extends State<RootView> {
                                           return RotationTransition(
                                               turns: animation, child: child);
                                         },
+                                        switchInCurve: Curves.easeInOut,
+                                        switchOutCurve: Curves.easeInOut,
                                         child: disableAllInputs
                                             ? const CircularProgressIndicator(
                                                 strokeWidth:
