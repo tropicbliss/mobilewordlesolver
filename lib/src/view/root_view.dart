@@ -57,14 +57,6 @@ class _RootViewState extends State<RootView> {
     shakeKey.currentState?.shake();
   }
 
-  Future<void> launchInWebView(String url) async {
-    bool isSuccess = await UrlLauncherService.launchInWebView(url);
-    if (!isSuccess && mounted) {
-      ToastService.showToast(
-          AppLocalizations.of(context)!.cannotLaunchUrl(url), ToastState.error);
-    }
-  }
-
   Future<void> onSubmit(bool hardMode) async {
     bool isInvalid = currentWord
         .any((letterBox) => letterBox.char == null || letterBox.state == null);
@@ -114,6 +106,14 @@ class _RootViewState extends State<RootView> {
     setState(() {
       disableAllInputs = false;
     });
+  }
+
+  Future<void> launchInWebView(String url) async {
+    bool isSuccess = await UrlLauncherService.launchInWebView(url);
+    if (!isSuccess && mounted) {
+      ToastService.showToast(
+          AppLocalizations.of(context)!.cannotLaunchUrl(url), ToastState.error);
+    }
   }
 
   @override
