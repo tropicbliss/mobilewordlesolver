@@ -7,6 +7,7 @@ import 'package:wordle_solver/src/services/settings/settings_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wordle_solver/src/services/toast/toast_service.dart';
 import 'package:confetti/confetti.dart';
+import 'package:wordle_solver/src/services/webview/url_launcher_service.dart';
 import 'package:wordle_solver/src/view/theme_mode_helper.dart';
 import 'package:wordle_solver/src/view/widgets/letter_box.dart';
 import 'package:wordle_solver/src/view/widgets/square_button.dart';
@@ -107,6 +108,14 @@ class _RootViewState extends State<RootView> {
     });
   }
 
+  Future<void> launchInWebView(String url) async {
+    bool isSuccess = await UrlLauncherService.launchInWebView(url);
+    if (!isSuccess && mounted) {
+      ToastService.showToast(
+          AppLocalizations.of(context)!.cannotLaunchUrl(url), ToastState.error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     AppTheme currentTheme = getTheme(context);
@@ -141,6 +150,13 @@ class _RootViewState extends State<RootView> {
                       });
                     },
                     disable: disableAllInputs),
+                AppBarAction(
+                  icon: Icons.info,
+                  onPressed: () {
+                    launchInWebView(
+                        "https://github.com/tropicbliss/mobilewordlesolver");
+                  },
+                ),
                 AppBarAction(
                   icon: currentTheme.getThemeIcon(),
                   onPressed: () {
