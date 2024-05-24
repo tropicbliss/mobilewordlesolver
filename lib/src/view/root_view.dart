@@ -245,6 +245,7 @@ class _RootViewState extends State<RootView> {
                             return LetterBox(
                                 params: LetterBoxParams(state: boxState),
                                 onTap: () {
+                                  HapticFeedback.vibrate();
                                   setState(() {
                                     currentWord[selectedIdx].state = boxState;
                                     if (selectedIdx != 4) {
