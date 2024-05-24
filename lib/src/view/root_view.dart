@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_shakemywidget/flutter_shakemywidget.dart';
 import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 import 'package:wordle_solver/src/constants/styling.dart';
@@ -191,6 +192,7 @@ class _RootViewState extends State<RootView> {
                         HardModeSlider(
                             isHardMode: isHardMode,
                             onChanged: (newValue) {
+                              HapticFeedback.mediumImpact();
                               widget.settingsController
                                   .updateHardMode(newValue);
                             }),
@@ -364,6 +366,7 @@ class _RootViewState extends State<RootView> {
               visible: !(immutableWords.isNotEmpty || isSolved),
               onKeyPress: (key) {
                 setState(() {
+                  HapticFeedback.vibrate();
                   switch (key.keyType) {
                     case VirtualKeyboardKeyType.String:
                       var itemMap = currentWord.asMap();
